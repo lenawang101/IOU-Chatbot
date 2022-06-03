@@ -37,7 +37,6 @@ function clear(textArray,array){
         array[i][j] = "0";
       }
     }
-    updateSpreadsheet(array);
     sendText("Cleared all user tabs.");
   }
   else if(textArray[1].toLowerCase() == "owedby"){
@@ -46,7 +45,6 @@ function clear(textArray,array){
       for(var j=1; j<numFilledRows(array)+1; j++){
         array[j][index] = "0";
       }
-      updateSpreadsheet(array);
       sendText("Cleared all owed by " + textArray[i] + ".");
     }
   }
@@ -57,11 +55,10 @@ function clear(textArray,array){
       for(var j=1; j<numFilledRows(array)+1; j++){
         array[index][j] = "0";
       }
-      updateSpreadsheet(array);
       sendText("Cleared all owed to " + textArray[i] + ".");
     }
   }
-
+  updateSpreadsheet(array);
 }
 
 function newUsersCommand(namesArray,array){
