@@ -40,6 +40,27 @@ function clear(textArray,array){
     updateSpreadsheet(array);
     sendText("Cleared all user tabs.");
   }
+  else if(textArray[1].toLowerCase() == "owedby"){
+    for(var i=2;i<textArray.length;i++){
+      var index = getNameIndex(textArray[i].toLowerCase(),array[0]);
+      for(var j=1; j<numFilledRows(array)+1; j++){
+        array[j][index] = "0";
+      }
+      updateSpreadsheet(array);
+      sendText("Cleared all owed by " + textArray[i] + ".");
+    }
+  }
+
+  else if(textArray[1].toLowerCase() == "owedto"){
+    for(var i=2;i<textArray.length;i++){
+      var index = getNameIndex(textArray[i].toLowerCase(),array[0]);
+      for(var j=1; j<numFilledRows(array)+1; j++){
+        array[index][j] = "0";
+      }
+      updateSpreadsheet(array);
+      sendText("Cleared all owed to " + textArray[i] + ".");
+    }
+  }
 
 }
 
@@ -101,7 +122,7 @@ function generateArray(spreadsheet){
 }
 
 function getNameIndex(name, array){//pass in ower/owee names and spreadsheet 2d array
-  for (var index in array[0]){
+  for (var index in array){
     if(name == array[index]){
       return index;
     }
