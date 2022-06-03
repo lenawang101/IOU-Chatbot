@@ -18,14 +18,10 @@ function doPost(e){
     clear(textArray,array);
   }
 
-  
-
-  if(text.toLowerCase().substring(0, 5) == "!sale"){
-    sendText(get("Xiyi Yang","Lena Wang"));
-  }else if(text.toLowerCase().substring(0, 9) == "!my sales"){
-    addUser("Test Name",array);
-    updateSpreadsheet(array);
+  if(command == ".log"){
+    logTransaction(textArray,array);
   }
+  
 }
 
 function clear(textArray,array){
@@ -69,6 +65,36 @@ function clear(textArray,array){
     }
   }
   updateSpreadsheet(array);
+}
+
+function logTransaction(textArray,array){
+  var totalValue = parseFloat(textArray[1]);
+  var personOwed = textArray[2].toLowerCase();
+  var personOwedIndex = getNameIndex(personOwed,array[0]);
+  var inOrExclusive = textArray[textArray.length-1].toLowerCase();
+  
+  if(inOrExclusive == "in"){
+    var numPeople = textArray.length - 3;
+    var valueLogged = totalValue / numPeople;
+    for(var i=2; i<textArray.length-1; i++){
+      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array);
+      if(personOwedIndex != owerIndex){
+        array[personOwedIndex][owerIndex] = parseFloat(array[personOwedIndex][owerIndex]) + valueLogged;
+      }
+    }
+  }
+  else if(inOrExclusive == "ex"){
+    var numPeople = textArray.length - 4;
+    var valueLogged = totalValue / numPeople;
+    for(var i=3; i<textArray.length-1; i++){
+      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array);
+      if(personOwedIndex != owerIndex){
+        array[personOwedIndex][owerIndex] = parseFloat(array[personOwedIndex][owerIndex]) + valueLogged;
+      }
+    }
+  }
+  updateSpreadsheet(array);
+  sendText("Transaction completed.");
 }
 
 function newUsersCommand(namesArray,array){
