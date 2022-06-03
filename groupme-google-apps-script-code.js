@@ -45,7 +45,12 @@ function clear(textArray,array){
       for(var j=1; j<numFilledRows(array)+1; j++){
         array[j][index] = "0";
       }
-      sendText("Cleared all owed by " + textArray[i] + ".");
+      if(array[0].includes(textArray[i].toLowerCase())){
+        sendText("Cleared all owed by " + textArray[i] + ".");
+      }
+      else{
+        sendText(textArray[i] + "is not a known user.");
+      }
     }
   }
 
@@ -55,7 +60,12 @@ function clear(textArray,array){
       for(var j=1; j<numFilledRows(array)+1; j++){
         array[index][j] = "0";
       }
-      sendText("Cleared all owed to " + textArray[i] + ".");
+      if(array[0].includes(textArray[i].toLowerCase())){
+        sendText("Cleared all owed to " + textArray[i] + ".");
+      }
+      else{
+        sendText(textArray[i] + "is not a known user.");
+      }
     }
   }
   updateSpreadsheet(array);
