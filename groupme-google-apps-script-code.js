@@ -72,26 +72,44 @@ function logTransaction(textArray,array){
   var personOwed = textArray[2].toLowerCase();
   var personOwedIndex = getNameIndex(personOwed,array[0]);
   var inOrExclusive = textArray[textArray.length-1].toLowerCase();
-  
+  if(array[0].includes(personOwed) == false){
+    sendText(textArray[2] + " is not a known user. Transaction canceled.");
+    return;
+  }
   if(inOrExclusive == "in"){
     var numPeople = textArray.length - 3;
     var valueLogged = totalValue / numPeople;
     for(var i=2; i<textArray.length-1; i++){
-      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array);
-      if(personOwedIndex != owerIndex){
-        array[personOwedIndex][owerIndex] = parseFloat(array[personOwedIndex][owerIndex]) + valueLogged;
+      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array[0]);
+      var previous = getVal(personOwed,textArray[i],array);
+      if(array[0].includes(textArray[i].toLowerCase())){
+        array[personOwedIndex][owerIndex] = (parseFloat(previous) + valueLogged).toString();
       }
+      else {
+        sendText(textArray[i] + " is not a known user. Transaction canceled.");
+        return;
+      }
+      array[personOwedIndex][personOwedIndex] = "0";
     }
   }
   else if(inOrExclusive == "ex"){
     var numPeople = textArray.length - 4;
     var valueLogged = totalValue / numPeople;
     for(var i=3; i<textArray.length-1; i++){
-      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array);
-      if(personOwedIndex != owerIndex){
-        array[personOwedIndex][owerIndex] = parseFloat(array[personOwedIndex][owerIndex]) + valueLogged;
+      var owerIndex = getNameIndex(textArray[i].toLowerCase(),array[0]);
+      var previous = getVal(personOwed,textArray[i],array);
+      if(array[0].includes(textArray[i].toLowerCase())){
+        array[personOwedIndex][owerIndex] = (parseFloat(previous) + valueLogged).toString();
+      }
+      else{
+        sendText(textArray[i] + " is not a known user. Transaction canceled.");
+        return;
       }
     }
+  }
+  else{
+    sendText("Please specify if this transaction is inclusive or exclusive.");
+    return;
   }
   updateSpreadsheet(array);
   sendText("Transaction completed.");
@@ -135,7 +153,7 @@ function addUser(name,array){//adds new username to spreadsheet
   }
 }
 
-function get(ower,owee){ //gets amount ower owes owee
+function getVal(owee,ower,array){ //gets amount ower owes owee
   var owerIndex = getNameIndex(ower,array[0]);
   var oweeIndex = getNameIndex(owee,array[0]);
   return array[oweeIndex][owerIndex];
@@ -156,7 +174,7 @@ function generateArray(spreadsheet){
 
 function getNameIndex(name, array){//pass in ower/owee names and spreadsheet 2d array
   for (var index in array){
-    if(name == array[index]){
+    if(name.toLowerCase() == array[index]){
       return index;
     }
   }
