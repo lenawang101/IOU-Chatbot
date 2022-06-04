@@ -21,6 +21,10 @@ function doPost(e){
   if(command == ".log"){
     logTransaction(textArray,array);
   }
+
+  if(command == ".users"){
+    listUsers(array);
+  }
   
 }
 
@@ -65,6 +69,17 @@ function clear(textArray,array){
     }
   }
   updateSpreadsheet(array);
+}
+
+function listUsers(array){
+  var i = 1;
+  var string = "";
+  sendText("All existing usernames: ")
+  while(array[0][i] != ""){
+    sendText(array[0][i]);
+    i++;
+  }
+  sendText(string);
 }
 
 function logTransaction(textArray,array){
