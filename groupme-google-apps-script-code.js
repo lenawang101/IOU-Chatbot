@@ -76,7 +76,21 @@ function logTransaction(textArray,array){
     sendText(textArray[2] + " is not a known user. Transaction canceled.");
     return;
   }
-  if(inOrExclusive == "in"){
+  if(textArray[3].toLowerCase() == "all" && inOrExclusive == "in"){
+    var valueLogged = totalValue / numFilledRows(array);
+    sendText("val logged: " + valueLogged.toString());
+    for(var j=1; j<numFilledRows(array)+1; j++){
+      array[personOwedIndex][j] = (parseFloat(array[personOwedIndex][j] + valueLogged)).toString();
+    }
+  }
+  else if(textArray[3].toLowerCase() == "all" && inOrExclusive == "ex"){
+    var valueLogged = totalValue / (numFilledRows(array)-1);
+    sendText("val logged: " + valueLogged.toString());
+    for(var j=1; j<numFilledRows(array)+1; j++){
+      array[personOwedIndex][j] = (parseFloat(array[personOwedIndex][j] + valueLogged)).toString();
+    }
+  }
+  else if(inOrExclusive == "in"){
     var numPeople = textArray.length - 3;
     var valueLogged = totalValue / numPeople;
     for(var i=2; i<textArray.length-1; i++){
@@ -89,7 +103,6 @@ function logTransaction(textArray,array){
         sendText(textArray[i] + " is not a known user. Transaction canceled.");
         return;
       }
-      array[personOwedIndex][personOwedIndex] = "0";
     }
   }
   else if(inOrExclusive == "ex"){
@@ -111,6 +124,7 @@ function logTransaction(textArray,array){
     sendText("Please specify if this transaction is inclusive or exclusive.");
     return;
   }
+  array[personOwedIndex][personOwedIndex] = "0";
   updateSpreadsheet(array);
   sendText("Transaction completed.");
 }
