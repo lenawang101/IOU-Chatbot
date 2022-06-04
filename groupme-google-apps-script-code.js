@@ -26,6 +26,42 @@ function doPost(e){
     listUsers(array);
   }
   
+  if(command == ".owedto"){
+    listOwedTo(textArray[1].toLowerCase(),array)
+  }
+
+  if(command == ".owedby"){
+    listOwedBy(textArray[1].toLowerCase(),array)
+  }
+
+}
+
+function listOwedTo(user,array){
+  if(array[0].includes(user) == false){
+    sendText(user + " is not a known user. To view the full user list, use the command '.users'");
+    return;
+  }
+  var userIndex = getNameIndex(user,array[0]);
+  for(var i=1; i<numFilledRows(array)+1; i++){
+    var valueOwed = array[userIndex][i];
+    if(valueOwed != "0" && userIndex != i){
+      sendText(array[0][i] + " owes " + user + " $" + valueOwed.toFixed(2));
+    }
+  }
+}
+
+function listOwedBy(user,array){
+  if(array[0].includes(user) == false){
+    sendText(user + " is not a known user. To view the full user list, use the command '.users'");
+    return;
+  }
+  var userIndex = getNameIndex(user,array[0]);
+  for(var i=1; i<numFilledRows(array)+1; i++){
+    var valueOwed = array[i][userIndex];
+    if(valueOwed != "0" && userIndex != i){
+      sendText(user + " owes " + array[0][i] + " $" + valueOwed.toFixed(2));
+    }
+  }
 }
 
 function clear(textArray,array){
@@ -49,7 +85,7 @@ function clear(textArray,array){
         sendText("Cleared all owed by " + textArray[i] + ".");
       }
       else{
-        sendText(textArray[i] + "is not a known user.");
+        sendText(textArray[i] + "is not a known user. To view the full user list, use the command '.users'");
       }
     }
   }
@@ -64,7 +100,7 @@ function clear(textArray,array){
         sendText("Cleared all owed to " + textArray[i] + ".");
       }
       else{
-        sendText(textArray[i] + "is not a known user.");
+        sendText(textArray[i] + "is not a known user. To view the full user list, use the command '.users'");
       }
     }
   }
@@ -88,7 +124,7 @@ function logTransaction(textArray,array){
   var personOwedIndex = getNameIndex(personOwed,array[0]);
   var inOrExclusive = textArray[textArray.length-1].toLowerCase();
   if(array[0].includes(personOwed) == false){
-    sendText(textArray[2] + " is not a known user. Transaction canceled.");
+    sendText(textArray[2] + " is not a known user. Transaction canceled. To see the full user list, use the command '.users'");
     return;
   }
   if(textArray[3].toLowerCase() == "all" && inOrExclusive == "in"){
@@ -115,7 +151,7 @@ function logTransaction(textArray,array){
         array[personOwedIndex][owerIndex] = (parseFloat(previous) + valueLogged).toString();
       }
       else {
-        sendText(textArray[i] + " is not a known user. Transaction canceled.");
+        sendText(textArray[i] + " is not a known user. Transaction canceled. To see the full user list, use the command '.users'");
         return;
       }
     }
@@ -130,7 +166,7 @@ function logTransaction(textArray,array){
         array[personOwedIndex][owerIndex] = (parseFloat(previous) + valueLogged).toString();
       }
       else{
-        sendText(textArray[i] + " is not a known user. Transaction canceled.");
+        sendText(textArray[i] + " is not a known user. Transaction canceled. To see the full user list, use the command '.users'");
         return;
       }
     }
