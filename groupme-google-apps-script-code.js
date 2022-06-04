@@ -34,9 +34,24 @@ function doPost(e){
     listOwedBy(textArray[1].toLowerCase(),array)
   }
 
+  if(command == ".help"){
+    help();
+  }
+
+}
+function help(){
+  sendText("Hello! I'm IOU, a ChatBot created to help groups keep track of finances amongst themselves. Here's a brief overview of my commands: ");
+  sendText("➣ .new - Create new user profiles (ex: .new ally");
+  sendText("➣ .log - Log transactions between group members (ex: .log 25 eric ana joe in");
+  sendText("➣ .clear - Clear pending debts (ex: .clear owedto laura)");
+  sendText("➣ .owedto - View who owes the specified user money (ex: .owedto ed");
+  sendText("➣ .owedby - View who the specify user owes money to (ex: .owedby ed");
+  sendText("➣ .users - View a list of all existing users");
+  sendText("For more detail on commands, visit our webpage: ");
 }
 
 function listOwedTo(user,array){
+  var noOne = 1;
   if(array[0].includes(user) == false){
     sendText(user + " is not a known user. To view the full user list, use the command '.users'");
     return;
@@ -45,12 +60,17 @@ function listOwedTo(user,array){
   for(var i=1; i<numFilledRows(array)+1; i++){
     var valueOwed = array[userIndex][i];
     if(valueOwed != "0" && userIndex != i){
-      sendText(array[0][i] + " owes " + user + " $" + valueOwed.toFixed(2));
+      sendText("➣ " + array[0][i] + " owes " + user + " $" + valueOwed.toFixed(2));
+      noOne = 0;
     }
+  }
+  if(noOne == 1){
+    sendText("Nobody currently owes " + user + ".")
   }
 }
 
 function listOwedBy(user,array){
+  var noOne = 1;
   if(array[0].includes(user) == false){
     sendText(user + " is not a known user. To view the full user list, use the command '.users'");
     return;
@@ -59,8 +79,12 @@ function listOwedBy(user,array){
   for(var i=1; i<numFilledRows(array)+1; i++){
     var valueOwed = array[i][userIndex];
     if(valueOwed != "0" && userIndex != i){
-      sendText(user + " owes " + array[0][i] + " $" + valueOwed.toFixed(2));
+      sendText("➣ " + user + " owes " + array[0][i] + " $" + valueOwed.toFixed(2));
+      noOne = 0;
     }
+  }
+  if(noOne == 1){
+    sendText(user + " owes nobody.")
   }
 }
 
@@ -112,7 +136,7 @@ function listUsers(array){
   var string = "";
   sendText("All existing usernames: ")
   while(array[0][i] != ""){
-    sendText(array[0][i]);
+    sendText("➣ " + array[0][i]);
     i++;
   }
   sendText(string);
@@ -129,14 +153,14 @@ function logTransaction(textArray,array){
   }
   if(textArray[3].toLowerCase() == "all" && inOrExclusive == "in"){
     var valueLogged = totalValue / numFilledRows(array);
-    sendText("val logged: " + valueLogged.toString());
+    sendText("Value logged per person: " + valueLogged.toFixed(2));
     for(var j=1; j<numFilledRows(array)+1; j++){
       array[personOwedIndex][j] = (parseFloat(array[personOwedIndex][j] + valueLogged)).toString();
     }
   }
   else if(textArray[3].toLowerCase() == "all" && inOrExclusive == "ex"){
     var valueLogged = totalValue / (numFilledRows(array)-1);
-    sendText("val logged: " + valueLogged.toString());
+    sendText("Value logged per person: " + valueLogged.toFixed(2));
     for(var j=1; j<numFilledRows(array)+1; j++){
       array[personOwedIndex][j] = (parseFloat(array[personOwedIndex][j] + valueLogged)).toString();
     }
@@ -188,7 +212,7 @@ function newUsersCommand(namesArray,array){
       else{
         addUser(namesArray[i].toLowerCase(),array);
         updateSpreadsheet(array);
-        sendText("User '" + namesArray[i] + "' successfully added.");
+        sendText("➣ User '" + namesArray[i] + "' successfully added.");
       }
     }
 }
