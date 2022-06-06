@@ -22,7 +22,7 @@ The IOU ChatBot integrates directly with the user's existing group chats to help
 - the ability to view running tabs
 - the ability to clear tabs
 
-# Why I Built This Project This Way
+# Rationale for Product Design
 I wanted to keep this project user-oriented. This means at every step, I asked myself: what would make the most sense to a user? 
 
 This is why I chose to create a bot, or extension, that works with popular existing messaging services. This eliminates the need for the user to download and register for a new application, or remember another set of login credentials. After all, it's unlikely that every single group member would want to go through the aforementioned process to keep track of owed payments between each other. This bot allows the group as a whole to perform the set up once, and then everyone can enjoy the benefits. The best part is, not all users need to even have GroupMe - they can simply be added via phone number and still communicate in the chat (and with the bot) through text messages. This makes this chatbot accessible to all.
@@ -43,7 +43,7 @@ When creating the commands, I kept them as simple as possible. My goal was to cu
 
 ➣ .users - View a list of all existing users
 
-# If I Had More Time, I Would...
+# Potential Future Iterations
 - Expand this chatbot application to other well-known platforms to reach a larger audience (Discord, WhatsApp, etc.)
 - Transfer the data storage to PostgreSQL, rather than using Google Apps Script and its associated products, for more flexibility with data management
 - Solicit user feedback on the commands and overall user experience
