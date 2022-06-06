@@ -1,4 +1,4 @@
-var botId = "26242ea3e201c7124551aadef1";//groupme bot id
+var botId = "dfccac3a9277a90da1eee378fd";//groupme bot id
 
 function doPost(e){
   spreadsheet = loadSpreadsheet();
@@ -25,7 +25,7 @@ function doPost(e){
   if(command == ".users"){
     listUsers(array);
   }
-  
+
   if(command == ".owedto"){
     listOwedTo(textArray[1].toLowerCase(),array)
   }
@@ -41,11 +41,11 @@ function doPost(e){
 }
 function help(){
   sendText("Hello! I'm IOU, a ChatBot created to help groups keep track of finances amongst themselves. Here's a brief overview of my commands: ");
-  sendText("➣ .new - Create new user profiles (ex: .new ally");
-  sendText("➣ .log - Log transactions between group members (ex: .log 25 eric ana joe in");
+  sendText("➣ .new - Create new user profiles (ex: .new ally)");
+  sendText("➣ .log - Log transactions between group members (ex: .log 25 eric ana joe in)");
   sendText("➣ .clear - Clear pending debts (ex: .clear owedto laura)");
-  sendText("➣ .owedto - View who owes the specified user money (ex: .owedto ed");
-  sendText("➣ .owedby - View who the specify user owes money to (ex: .owedby ed");
+  sendText("➣ .owedto - View who owes the specified user money (ex: .owedto ed)");
+  sendText("➣ .owedby - View who the specify user owes money to (ex: .owedby ed)");
   sendText("➣ .users - View a list of all existing users");
   sendText("For more detail on commands, visit our webpage: ");
 }
